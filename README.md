@@ -1,13 +1,24 @@
-# Google Suite Hub (Concept)
+# Google Suite Hub (demo)
 
-This repository outlines a 4-in-1 personal dashboard that brings together Gmail, Google Tasks, Google Calendar, and a simple Habits tracker once authenticated with your Google account.
+Repo zawiera działającą, lokalną wersję demo 4‑w‑1: Gmail, Google Tasks, Google Calendar oraz Habits. Obecnie dane są przykładowe (mock), ale architektura i UI są gotowe do podpięcia prawdziwych usług Google przez OAuth.
 
-## What it does
-- **Unified sign-in**: Uses Google OAuth to request consent for Gmail, Tasks, and Calendar scopes.
-- **Inbox snapshot**: Reads recent messages (Gmail) for quick triage.
-- **Tasks board**: Surfaces Google Tasks lists and items for the signed-in user.
-- **Calendar glance**: Shows upcoming events across calendars.
-- **Habits**: Stores lightweight habit check-ins locally (separate from Google data) so you can see habits next to Google data.
+## Co już działa
+- **Dashboard webowy** (Flask + Jinja) z kartami: Gmail, Tasks, Calendar, Habits.
+- **Przykładowe dane** po stronie backendu, żeby zobaczyć wygląd i układ aplikacji od razu po uruchomieniu.
+
+## Jak uruchomić lokalne demo
+1. Upewnij się, że masz Python 3.11+.
+2. Zainstaluj zależności:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Uruchom serwer developerski:
+   ```bash
+   flask --app app run
+   ```
+4. Wejdź w przeglądarce na `http://localhost:5000` – zobaczysz połączony widok Gmail/Tasks/Calendar/Habits z mock danymi.
+
+> **Tip:** Kod szablonu jest w `templates/index.html`, a dane generuje `app.py` w funkcjach `mock_*`.
 
 ## Architecture sketch
 - **Frontend**: Web UI (SPA or server-rendered) that hits a backend API after OAuth completes.
@@ -45,14 +56,14 @@ This repository outlines a 4-in-1 personal dashboard that brings together Gmail,
 - `habit_checkin` table: `id`, `habit_id`, `date`, `status` (done/skipped/partial).
 
 ## Development checklist
-- [ ] Choose a framework (e.g., FastAPI, Flask, or Next.js with API routes).
-- [ ] Add OAuth endpoints (`/auth/login`, `/oauth/callback`).
-- [ ] Implement token storage and refresh handling.
-- [ ] Add Google API clients for Gmail, Tasks, Calendar.
-- [ ] Create Habit CRUD + check-in endpoints.
-- [ ] Build a dashboard UI that combines all data sources.
+- [x] Wybrać framework (Flask) i zbudować UI demo.
+- [ ] Dodać endpointy OAuth (`/auth/login`, `/oauth/callback`).
+- [ ] Zaimplementować przechowywanie/odświeżanie tokenów.
+- [ ] Podłączyć klientów Google API (Gmail, Tasks, Calendar) zamiast mocków.
+- [ ] Dodać CRUD na Habits + check-iny.
+- [ ] Zintegrować realne dane z widokiem dashboardu.
 
 ## Notes and constraints
-- This repo currently contains documentation only; the actual implementation requires configuring a Google Cloud project and secrets.
+- Demo używa danych przykładowych; produkcyjnie trzeba skonfigurować Google Cloud project i sekrety.
 - Keep secrets out of version control; use environment variables or a secrets manager.
 - When adding code, avoid try/catch around imports to keep import failures visible.
