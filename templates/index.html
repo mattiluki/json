@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Google Suite Hub (demo)</title>
+    <style>
+      :root {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: #f7f8fa;
+        color: #111;
+      }
+      body {
+        margin: 0;
+        padding: 24px;
+      }
+      h1 {
+        margin-bottom: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+        margin-top: 12px;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      }
+      .label {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #6b7280;
+        margin-bottom: 8px;
+      }
+      .item { margin-bottom: 10px; }
+      .item:last-child { margin-bottom: 0; }
+      .pill {
+        display: inline-block;
+        background: #eef2ff;
+        color: #4338ca;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .muted { color: #6b7280; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <h1>Google Suite Hub</h1>
+    <p class="muted">Prosty, działający demo-front: Gmail, Tasks, Calendar i Habits z przykładowymi danymi.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="label">Gmail</div>
+        {% for email in emails %}
+        <div class="item">
+          <div><strong>{{ email.subject }}</strong></div>
+          <div class="muted">Od: {{ email.sender }} · {{ email.received_at.strftime('%H:%M %d.%m') }}</div>
+          <div class="muted">{{ email.snippet }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="card">
+        <div class="label">Tasks</div>
+        {% for task in tasks %}
+        <div class="item">
+          <div><strong>{{ task.title }}</strong></div>
+          <div class="muted">
+            Status: <span class="pill">{{ task.status }}</span>
+            {% if task.due %} · Termin: {{ task.due.strftime('%d.%m %H:%M') }}{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="card">
+        <div class="label">Calendar</div>
+        {% for event in events %}
+        <div class="item">
+          <div><strong>{{ event.title }}</strong></div>
+          <div class="muted">
+            {{ event.starts_at.strftime('%d.%m %H:%M') }} – {{ event.ends_at.strftime('%H:%M') }}
+            {% if event.location %} · {{ event.location }}{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="card">
+        <div class="label">Habits</div>
+        {% for habit in habits %}
+        <div class="item">
+          <div><strong>{{ habit.name }}</strong></div>
+          <div class="muted">Seria: {{ habit.streak }} dni{% if habit.note %} · {{ habit.note }}{% endif %}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
